@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>做不出来！！！</title>
+    
+</head>
+
+<style>
+        
+    *{
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        user-select: none;
+    }
+    #banner{
+        margin: 90px auto;
+        width: 800px;
+        height: 400px;
+        border: 3px solid black;
+        overflow: hidden;
+        position: relative;
+    }
+    #imglist{
+        width: 4000px;
+        height: 400px;
+
+    }
+    #imglist img{
+        width: 800px;
+        height: 400px;
+
+    }
+    #imglist li{
+        float:left;
+    }
+    /* 左右切换的按钮 */
+    #lbutton,#rbutton{
+        opacity: 0.6;
+        background-color:aliceblue ;
+        width:30px;
+        height:80px;
+        line-height: 80px;
+        position: absolute;
+        
+        color: skyblue;
+        transform: scale(1,2);
+        font-size: 2em;
+        cursor: pointer;
+    }
+    #lbutton{
+        top: 35%;
+        left: 10px;
+    }
+    #rbutton{
+        top: 35%;
+        right: 10px;
+    }
+   
+    #lbutton:hover,#rbutton:hover{
+        background-color: skyblue;
+        color: black;
+    }
+    #icolist{
+        display: flex;
+        width: 400px;
+        opacity: 0.6;
+        position: absolute;
+        bottom: 5px;
+        right: 0;
+        transform: translateX(-30%);
+        z-index: 22;
+    }
+    #icolist li{
+        background-color: aliceblue;
+        margin: 0 10px;
+        color: rgb(5, 126, 207);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        line-height: 40px;
+        font-size: 2em;
+        text-align: center;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+    <div id="banner">
+        <ul id="imglist">
+            <li><img src="1.jpg" alt=""></img></li>
+            <li><img src="2.jpg" alt=""></img></li>
+            <li><img src="3.jpg" alt=""></img></li>
+            <li><img src="4.jpg" alt=""></img></li>
+            <li><img src="1.jpg" alt=""></img></li>
+            
+        </ul>
+        <ul id="icolist">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+        <div id="lbutton" onclick="lmove()">&lt;</div>
+        <div id="rbutton" onclick="rmove()">&gt;</div>
+    </div>
+</body>
+<script>
+    // var imglist=document.getElementById('imglist');
+    // imglist.marginLeft=-100+'px';
+    
+    let left = 0;
+    let timer,times;
+    let imglist = document.getElementById("imglist");
+    var esico = document.getElementById('icolist').getElementsByTagName('li');
+    
+    var eicolist = document.querySelector('#icolist');
+    esico[2]
+    run();
+    function run(){
+        if (left<=-3200){
+            left=0;
+        }
+        var m=Math.floor(-left / 800);
+        imglist.style.marginLeft=left+'px';
+        var n = (left % 800 == 0) ? n = 1200 : n = 6;
+        left -= 10;
+        timer = setTimeout(run,n);
+        changedot(m);
+    }
+    //切换上一张
+    function lmove(){
+        let x=Math.floor(-left/800)-1;
+        if (x==-1){
+            x=3;
+        }
+        changepic(x);
+        changedot(x);
+        }
+    //切换下一张
+    function rmove(){
+        let x=Math.floor(-left/800)+1;
+        if (x==4){
+        x=0;
+        }
+        changepic(x);
+        changedot(x);
+        }
+    //图片切换times次
+    function changepic(times){
+        let lt=800*times;
+        imglist.style.marginLeft= -lt+'px';
+        left=-lt;//left为全局变量，切换时需同时改变
+    }
+    function changedot(m){
+        for (let index = 0; index < esico.length; index++) {
+            esico[index].style.backgroundColor = '';
+            esico[index].style.color = '';
+        }
+        if (m<esico.length){
+            esico[m].style.backgroundColor = 'skyblue';
+            esico[m].style.color = 'black';
+        }
+    }
+
+    //点击小圆点（1，2，3
+    eicolist.onclick = function (){
+        var tg = event.target;
+        let ico = tg.innerHTML - 1;
+        changedot(ico);
+        changepic(ico);
+    }
+    imglist.onmouseover = function(){
+    clearTimeout(timer);
+    }
+    imglist.onmouseout = function(){
+    run();
+    }
+</script>
+</html>
